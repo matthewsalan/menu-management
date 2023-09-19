@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Menu', type: :model do
+  let(:restaurant) { Restaurant.create(name: 'Hampton & Hudson') }
+
   context 'it creates a menu insane' do
-    let(:menu) { Menu.create(name: 'brunch') }
+    let(:menu) { Menu.create(name: 'brunch', restaurant_id: restaurant.id) }
 
     it 'creates' do
       expect { menu }.to change { Menu.count }.by 1
