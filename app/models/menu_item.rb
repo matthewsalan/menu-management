@@ -3,4 +3,8 @@ class MenuItem < ApplicationRecord
   belongs_to :restaurant
   validates :price, presence: true
   validates :name, presence: true, uniqueness: true
+
+  def add_to_menu(menu)
+    menus << menu
+  end
 end

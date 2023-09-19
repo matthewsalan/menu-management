@@ -3,12 +3,11 @@ require 'rails_helper'
 RSpec.describe 'MenuItem', type: :model do
   let(:restaurant) { Restaurant.create(name: 'Hampton & Hudson') }
   let(:menu) { Menu.create(name: 'brunch', restaurant_id: restaurant.id) }
+  let(:menu_item) do
+    MenuItem.create(price: 2.99, name: 'Bacon', restaurant_id: restaurant.id)
+  end
 
   context 'it creates a menu item insane' do
-    let(:menu_item) do
-      MenuItem.create(price: 2.99, name: 'Bacon', restaurant_id: restaurant.id)
-    end
-
     it 'creates' do
       expect { menu_item }.to change { MenuItem.count }.by 1
     end
@@ -31,6 +30,13 @@ RSpec.describe 'MenuItem', type: :model do
     it 'does not create a menu item instance if name is blank' do
       expect { MenuItem.create!(price: 4.99, restaurant_id: restaurant.id) }
         .to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Name can't be blank")
+    end
+  end
+
+  describe '#add_to_menu' do
+    it 'adds the item to a given menu' do
+      menu_item.add_to_menu(menu)
+      expect(menu_item.menus.count).to eq 1
     end
   end
 end
